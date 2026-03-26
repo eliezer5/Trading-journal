@@ -3,81 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Trading Mind Journal - Multi User</title>
+<title>Trading Mind Journal</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #05080d;
-  --s1: #090e16;
-  --s2: #0e1520;
-  --border: #162030;
-  --green: #00e676;
-  --yellow: #ffc400;
-  --red: #ff1744;
-  --blue: #40c4ff;
-  --purple: #ce93d8;
-  --text: #dde8f8;
-  --muted: #3a5068;
-  --mono: 'DM Mono', monospace;
-  --sans: 'Syne', sans-serif;
+  --bg:#05080d;--s1:#090e16;--s2:#0e1520;--border:#162030;
+  --green:#00e676;--yellow:#ffc400;--red:#ff1744;--blue:#40c4ff;
+  --purple:#ce93d8;--text:#dde8f8;--muted:#3a5068;
+  --mono:'DM Mono',monospace;--sans:'Syne',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow-x:hidden}
-body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bottom:100px;position:relative}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bottom:100px}
 
 /* LOADER */
-#loader{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+#loader{position:fixed;inset:0;background:var(--bg);z-index:2000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
 .spin{width:40px;height:40px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-txt{font-size:11px;color:var(--muted);letter-spacing:2px}
 
 /* TOAST */
-#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 18px;font-size:12px;opacity:0;transition:all .3s;z-index:200;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 18px;font-size:12px;opacity:0;transition:all .3s;z-index:3000;pointer-events:none;white-space:nowrap}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:var(--green);color:var(--green)}
 #toast.err{border-color:var(--red);color:var(--red)}
 
 /* AUTH SCREEN */
-#auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:20px;background:linear-gradient(135deg,#0a1828 0%,#05080d 100%)}
+#auth-screen{position:fixed;inset:0;background:var(--bg);z-index:1500;display:flex;align-items:center;justify-content:center;padding:20px}
 .auth-card{background:var(--s2);border:1px solid var(--border);border-radius:16px;padding:32px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.auth-logo{font-family:var(--sans);font-size:28px;font-weight:800;margin-bottom:8px;text-align:center}
+.auth-logo{font-family:var(--sans);font-size:28px;font-weight:800;margin-bottom:8px;text-align:center;letter-spacing:-.5px}
 .auth-logo em{color:var(--blue);font-style:normal}
-.auth-subtitle{font-size:12px;color:var(--muted);text-align:center;margin-bottom:24px;letter-spacing:1px}
-.auth-tabs{display:flex;gap:12px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px}
-.auth-tab{flex:1;padding:8px;text-align:center;font-size:12px;cursor:pointer;color:var(--muted);transition:all .3s;border-bottom:2px solid transparent;transform:translateY(16px);font-weight:600}
-.auth-tab.active{color:var(--blue);border-bottom-color:var(--blue);transform:translateY(0)}
-.auth-form{display:none}
-.auth-form.show{display:block}
-.auth-fg{margin-bottom:14px}
-.auth-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;display:block}
-.auth-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:11px 14px;font-size:13px;font-family:var(--mono);outline:none;transition:all .2s}
+.auth-sub{font-size:10px;color:var(--muted);text-align:center;margin-bottom:24px;letter-spacing:1px}
+.auth-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.auth-tab{flex:1;text-align:center;font-size:11px;cursor:pointer;color:var(--muted);padding:9px;font-weight:600;transition:all .2s;background:var(--bg)}
+.auth-tab.active{color:#000;background:var(--blue)}
+.auth-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:11px 12px;margin-bottom:12px;font-family:var(--mono);font-size:13px;outline:none;transition:border-color .2s}
 .auth-input:focus{border-color:var(--blue)}
-.auth-btn{width:100%;padding:14px;border-radius:10px;border:none;background:var(--blue);color:#000;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:12px;letter-spacing:.3px}
-.auth-btn:active{transform:scale(.98)}
-.auth-btn:disabled{opacity:.5;cursor:not-allowed}
-.auth-note{font-size:10px;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5}
+.auth-err{font-size:10px;color:var(--red);margin-bottom:10px;min-height:14px;text-align:center}
 
 /* HEADER */
-.hdr{padding:14px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#0a1828 0%,transparent 100%);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hdr{padding:14px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#0a1828 0%,transparent 100%);display:flex;justify-content:space-between;align-items:center}
 .hdr-left{flex:1}
 .hdr-tag{font-size:8px;color:var(--muted);letter-spacing:3px;text-transform:uppercase}
 .hdr-title{font-family:var(--sans);font-size:18px;font-weight:800;letter-spacing:-.5px;line-height:1.1;margin-top:2px}
 .hdr-title em{color:var(--blue);font-style:normal}
-.hdr-user{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.user-badge{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:6px 11px;font-size:10px;font-weight:600}
-.user-badge.active{background:var(--blue);color:#000;border-color:var(--blue)}
-.logout-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:10px;cursor:pointer;font-family:var(--mono);transition:all .2s}
+.hdr-right{text-align:right;flex-shrink:0}
+.user-email{font-size:9px;color:var(--blue);margin-bottom:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.logout-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:9px;cursor:pointer;transition:all .2s;font-family:var(--mono)}
 .logout-btn:hover{border-color:var(--red);color:var(--red)}
+.hdr-status{font-size:8px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:2px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* NAV */
 .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:10px 12px;background:var(--bg);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
 .nb{padding:8px 2px;border:1px solid var(--border);border-radius:8px;background:var(--s1);color:var(--muted);font-family:var(--mono);font-size:9px;cursor:pointer;text-align:center;letter-spacing:.3px;transition:all .2s;line-height:1.4}
 .nb.on{background:var(--blue);color:#000;border-color:var(--blue);font-weight:600}
 
-/* WRAP */
+/* WRAP & CARD */
 .wrap{padding:14px;position:relative;z-index:1}
-
-/* CARD */
 .card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
 .clabel{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
 
@@ -85,9 +69,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
 .sem{display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 16px;background:var(--s2);border-radius:14px;border:1px solid var(--border);margin-bottom:12px}
 .sem-lights{display:flex;gap:16px}
 .sl{width:54px;height:54px;border-radius:50%;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.2;transition:all .35s}
-.sl.ar{opacity:1;background:var(--red);box-shadow:0 0 28px var(--red)99,0 0 60px var(--red)33}
-.sl.ay{opacity:1;background:var(--yellow);box-shadow:0 0 28px var(--yellow)99,0 0 60px var(--yellow)33}
-.sl.ag{opacity:1;background:var(--green);box-shadow:0 0 28px var(--green)99,0 0 60px var(--green)33}
+.sl.ar{opacity:1;background:var(--red);box-shadow:0 0 28px #ff174499,0 0 60px #ff174433}
+.sl.ay{opacity:1;background:var(--yellow);box-shadow:0 0 28px #ffc40099,0 0 60px #ffc40033}
+.sl.ag{opacity:1;background:var(--green);box-shadow:0 0 28px #00e67699,0 0 60px #00e67633}
 .sem-v{font-family:var(--sans);font-size:17px;font-weight:700;text-align:center}
 .sem-d{font-size:11px;color:var(--muted);text-align:center;line-height:1.5;max-width:280px}
 
@@ -139,13 +123,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
 .slbl{font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
 
 /* PROGRESS */
-.prog-hdr{display:flex;justify-content:space-between;font-size:9px;margin-bottom:5px;font-family:var(--mono)}
+.prog-hdr{display:flex;justify-content:space-between;font-size:9px;margin-bottom:5px}
 .prog-track{background:var(--border);border-radius:4px;height:8px;overflow:hidden}
 .prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .6s ease}
-.prog-lbls{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:3px;font-family:var(--mono)}
+.prog-lbls{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:3px}
 
 /* HISTORY */
-.hcard{background:var(--s1);border-radius:11px;padding:13px;margin-bottom:9px;border-left:3px solid var(--border);transition:all .2s}
+.hcard{background:var(--s1);border-radius:11px;padding:13px;margin-bottom:9px;border-left:3px solid var(--border)}
 .hcard.g{border-left-color:var(--green)}
 .hcard.y{border-left-color:var(--yellow)}
 .hcard.r{border-left-color:var(--red)}
@@ -159,24 +143,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
 .hact{font-size:12px;font-weight:500;margin-bottom:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .hpnl{font-size:14px;font-weight:700;font-family:var(--sans)}
 .hraz{font-size:10px;color:var(--muted);line-height:1.4;margin-bottom:4px;font-style:italic}
-.hniv{font-size:9px;color:var(--blue);margin-bottom:4px;font-family:var(--mono)}
+.hniv{font-size:9px;color:var(--blue);margin-bottom:4px}
 .hles{font-size:10px;color:var(--purple);margin-bottom:4px}
 .hjtext{font-size:10px;line-height:1.5;margin-top:8px;display:none;border-top:1px solid var(--border);padding-top:8px;color:var(--muted)}
 .row-btns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .togbtn,.delbtn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:4px 9px;font-size:9px;cursor:pointer;font-family:var(--mono);transition:all .2s}
 .delbtn{border-color:#ff174430;color:var(--red)}
 
-/* INSIGHT */
+/* INSIGHTS */
 .ins{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:8px}
 .ins-t{font-size:10px;color:var(--blue);margin-bottom:4px;letter-spacing:.3px}
 .ins-d{font-size:11px;color:var(--muted);line-height:1.5}
-
-/* EMPTY */
 .empty{text-align:center;padding:30px 16px;color:var(--muted);font-size:12px;line-height:1.8}
 .elink{color:var(--blue);cursor:pointer;text-decoration:underline}
-
-.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
-.saving-badge{font-size:9px;color:var(--muted);text-align:center;padding:4px;letter-spacing:1px}
+.saving-badge{font-size:9px;color:var(--muted);text-align:center;padding:4px;letter-spacing:1px;display:none}
 </style>
 </head>
 <body>
@@ -184,72 +164,47 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
 <!-- LOADER -->
 <div id="loader">
   <div class="spin"></div>
-  <div class="load-txt">CARGANDO...</div>
+  <div class="load-txt">SINCRONIZANDO...</div>
 </div>
 
 <!-- TOAST -->
 <div id="toast"></div>
 
 <!-- AUTH SCREEN -->
-<div id="auth-screen">
+<div id="auth-screen" style="display:none">
   <div class="auth-card">
     <div class="auth-logo">Trading <em>Mind</em></div>
-    <div class="auth-subtitle">Gestión de Trades Multiusuario</div>
-    
+    <div class="auth-sub">JOURNAL DE CONTROL PSICOLÓGICO</div>
     <div class="auth-tabs">
-      <div class="auth-tab active" onclick="switchAuthTab('login')">Ingresar</div>
-      <div class="auth-tab" onclick="switchAuthTab('register')">Crear Cuenta</div>
+      <div class="auth-tab active" id="tab-login-btn" onclick="setAuthMode('login')">Ingresar</div>
+      <div class="auth-tab" id="tab-reg-btn" onclick="setAuthMode('reg')">Crear Cuenta</div>
     </div>
-
-    <!-- LOGIN -->
-    <form class="auth-form show" id="login-form" onsubmit="handleLogin(event)">
-      <div class="auth-fg">
-        <label class="auth-label">Usuario</label>
-        <input type="text" class="auth-input" id="login-user" required>
-      </div>
-      <div class="auth-fg">
-        <label class="auth-label">Contraseña</label>
-        <input type="password" class="auth-input" id="login-pass" required>
-      </div>
-      <button type="submit" class="auth-btn">🔓 Ingresar</button>
-      <div class="auth-note">Usa cualquier usuario/contraseña. Los datos se guardan localmente.</div>
-    </form>
-
-    <!-- REGISTER -->
-    <form class="auth-form" id="register-form" onsubmit="handleRegister(event)">
-      <div class="auth-fg">
-        <label class="auth-label">Nombre de Usuario</label>
-        <input type="text" class="auth-input" id="register-user" required>
-      </div>
-      <div class="auth-fg">
-        <label class="auth-label">Contraseña</label>
-        <input type="password" class="auth-input" id="register-pass" required>
-      </div>
-      <div class="auth-fg">
-        <label class="auth-label">Confirmar Contraseña</label>
-        <input type="password" class="auth-input" id="register-pass2" required>
-      </div>
-      <button type="submit" class="auth-btn">✍️ Crear Cuenta</button>
-      <div class="auth-note">Cada usuario tiene sus propios trades separados.</div>
+    <form id="auth-form" onsubmit="handleAuth(event)">
+      <input type="email" id="auth-email" class="auth-input" placeholder="correo@email.com" required autocomplete="email">
+      <input type="password" id="auth-pass" class="auth-input" placeholder="Contraseña (mín. 6 caracteres)" required autocomplete="current-password">
+      <div class="auth-err" id="auth-err"></div>
+      <button type="submit" class="btn ok" id="auth-btn" style="margin-top:0">🔓 Ingresar</button>
     </form>
   </div>
 </div>
 
-<!-- APP SCREEN -->
+<!-- APP -->
 <div id="app-screen" style="display:none">
-  <!-- HEADER -->
   <div class="hdr">
     <div class="hdr-left">
       <div class="hdr-tag">Sistema de Control Psicológico</div>
       <div class="hdr-title">Trading <em>Mind</em> Journal</div>
+      <div class="hdr-status">
+        <div class="dot"></div>
+        <span id="sync-status">Sincronizando...</span>
+      </div>
     </div>
-    <div class="hdr-user">
-      <div class="user-badge active" id="current-user">Usuario</div>
-      <button class="logout-btn" onclick="logout()">Salir</button>
+    <div class="hdr-right">
+      <div class="user-email" id="user-display">—</div>
+      <button class="logout-btn" onclick="handleLogout()">Salir</button>
     </div>
   </div>
 
-  <!-- NAV -->
   <div class="nav">
     <button class="nb on" onclick="show('semaforo')">🚦<br>Check</button>
     <button class="nb" onclick="show('nuevo')">✍️<br>Trade</button>
@@ -259,7 +214,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
 
   <div class="wrap">
 
-    <!-- ═══════════ SEMÁFORO ═══════════ -->
+    <!-- SEMÁFORO -->
     <div id="tab-semaforo">
       <div class="sem">
         <div style="font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase">¿Puedo operar ahora?</div>
@@ -271,21 +226,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
         <div class="sem-v" id="sem-v" style="color:var(--muted)">Completa el checklist</div>
         <div class="sem-d" id="sem-d">Responde honestamente las preguntas de abajo</div>
       </div>
-
       <div class="card">
         <div class="clabel">🟢 Necesitas mínimo 6 de 8</div>
         <div class="cl" id="gcl"></div>
       </div>
-
       <div class="card">
         <div class="clabel">🔴 Si marcas 2 o más → NO operas</div>
         <div class="cl" id="rcl"></div>
       </div>
-
       <button class="btn" onclick="calcSem()">⚡ Calcular mi Semáforo</button>
     </div>
 
-    <!-- ═══════════ NUEVO TRADE ═══════════ -->
+    <!-- NUEVO TRADE -->
     <div id="tab-nuevo" style="display:none">
       <div class="card">
         <div class="clabel" style="margin-bottom:12px">😌 ¿Cómo te sientes AHORA MISMO?</div>
@@ -298,7 +250,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
           <div class="eb" onclick="setEmo('Neutral','n',this)"><span class="eemoji">😐</span><div class="elabel">Neutral</div></div>
         </div>
       </div>
-
       <div class="card">
         <div class="fg">
           <label class="fl">📅 Fecha y hora</label>
@@ -324,7 +275,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
         </div>
         <div class="fg">
           <label class="fl">🎯 ¿Por qué entras? — sé específico</label>
-          <textarea id="f-razon" class="fta" placeholder="Ej: Precio rechazó zona naranja 46,975 con vela shooting star en 1H..."></textarea>
+          <textarea id="f-razon" class="fta" placeholder="Ej: Precio rechazó zona naranja 46,975 con vela shooting star en 1H. Línea diagonal bajista tocada. VIX sobre 25..."></textarea>
         </div>
         <div class="fg">
           <label class="fl">⏱️ Temporalidades que confirman</label>
@@ -355,7 +306,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
           <textarea id="f-niv" class="fta" style="min-height:50px" placeholder="Entrada: 46,745 / Stop: 47,100 / T1: 45,801 / T2: 45,204"></textarea>
         </div>
         <div class="fg">
-          <label class="fl">💰 Resultado P&L ($) — pon 0 si está abierto</label>
+          <label class="fl">💰 Resultado P&amp;L ($) — pon 0 si está abierto</label>
           <input type="number" id="f-pnl" class="fi" placeholder="ej: 270 o -87" step="0.01">
         </div>
         <div class="fg">
@@ -363,21 +314,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
           <textarea id="f-lesson" class="fta" style="min-height:50px" placeholder="¿Qué hiciste bien? ¿Qué mejorarías?"></textarea>
         </div>
       </div>
-
-      <button class="btn" onclick="juzgar()" id="judge-btn">🔍 Analizar y Juzgarme</button>
-
+      <button class="btn" onclick="juzgar()">🔍 Analizar y Juzgarme</button>
       <div class="jbox" id="jbox">
         <div class="jtitle" id="jtitle"></div>
         <div class="jtext" id="jtext"></div>
       </div>
-
-      <button class="btn ok" id="savebtn" onclick="guardar()" style="display:none">
-        💾 Guardar en la Nube
-      </button>
-      <div class="saving-badge" id="saving-badge" style="display:none">guardando...</div>
+      <button class="btn ok" id="savebtn" onclick="guardar()" style="display:none">💾 Guardar en la Nube</button>
+      <div class="saving-badge" id="saving-badge">guardando...</div>
     </div>
 
-    <!-- ═══════════ HISTORIAL ═══════════ -->
+    <!-- HISTORIAL -->
     <div id="tab-historial" style="display:none">
       <div id="hist-list"></div>
       <div id="hist-empty" class="empty">
@@ -386,14 +332,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
       </div>
     </div>
 
-    <!-- ═══════════ STATS ═══════════ -->
+    <!-- STATS -->
     <div id="tab-stats" style="display:none">
       <div class="sgrid">
         <div class="sbox"><div class="sval" id="st-total" style="color:var(--blue)">0</div><div class="slbl">Trades</div></div>
-        <div class="sbox"><div class="sval" id="st-pnl" style="color:var(--green)">$0</div><div class="slbl">P&L Total</div></div>
+        <div class="sbox"><div class="sval" id="st-pnl" style="color:var(--green)">$0</div><div class="slbl">P&amp;L Total</div></div>
         <div class="sbox"><div class="sval" id="st-wr" style="color:var(--yellow)">0%</div><div class="slbl">Win Rate</div></div>
       </div>
-
       <div class="card">
         <div class="prog-hdr">
           <span style="color:var(--muted)">META TOPSTEP</span>
@@ -402,154 +347,149 @@ body{background:var(--bg);color:var(--text);font-family:var(--mono);padding-bott
         <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
         <div class="prog-lbls"><span>$0</span><span>$3,000 🎯</span></div>
       </div>
-
       <div class="card">
         <div class="clabel" style="margin-bottom:12px">🧠 Patrones Detectados</div>
         <div id="insights"></div>
         <div id="ins-empty" class="empty" style="padding:16px 0">Registra más trades para detectar patrones</div>
       </div>
-
       <div class="card" style="border-color:#ff174430">
         <div class="clabel" style="color:var(--red);margin-bottom:8px">⚠️ Zona de Peligro</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">Esto borrará todos tus trades permanentemente. No hay forma de recuperarlos.</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">Borrará todos tus trades permanentemente. No hay forma de recuperarlos.</div>
         <button class="btn red" onclick="borrarTodo()">🗑️ Borrar todos los datos</button>
       </div>
     </div>
 
-  </div><!-- end wrap -->
-</div>
+  </div><!-- wrap -->
+</div><!-- app-screen -->
 
-<script>
-// ═══════════════════════════════════════
-// STORAGE MANAGEMENT
-// ═══════════════════════════════════════
-const STORAGE_KEY = 'tradingMindUsers';
-const TRADES_KEY_PREFIX = 'tradingMind_trades_';
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-let currentUser = null;
+// ═══════════════════════════════════════
+// FIREBASE CONFIG
+// ═══════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyDsBfT8gYoDr1aMk664u4t0QtOJqS0Wokg",
+  authDomain: "trading-journal-142a3.firebaseapp.com",
+  databaseURL: "https://trading-journal-142a3-default-rtdb.firebaseio.com",
+  projectId: "trading-journal-142a3",
+  storageBucket: "trading-journal-142a3.firebasestorage.app",
+  messagingSenderId: "682773185274",
+  appId: "1:682773185274:web:ec34db94b683fb1ea8bf43",
+  measurementId: "G-D3K8XKZ41T"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
 let trades = [];
-let curEmo = '';
-let curEmoType = '';
+let currentUser = null;
+let curEmo = '', curEmoType = '';
 let lastJudge = null;
 let isSaving = false;
-
-// Load users from localStorage
-function getUsers() {
-  const data = localStorage.getItem(STORAGE_KEY);
-  return data ? JSON.parse(data) : {};
-}
-
-function saveUsers(users) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
-}
-
-function getUserTrades(username) {
-  const key = TRADES_KEY_PREFIX + username;
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : [];
-}
-
-function saveTrades(username, tradesArray) {
-  const key = TRADES_KEY_PREFIX + username;
-  localStorage.setItem(key, JSON.stringify(tradesArray));
-}
+let authMode = 'login';
 
 // ═══════════════════════════════════════
-// AUTH FUNCTIONS
+// AUTH STATE
 // ═══════════════════════════════════════
-function switchAuthTab(tab) {
-  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('show'));
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-  
-  if (tab === 'login') {
-    document.getElementById('login-form').classList.add('show');
-    document.querySelectorAll('.auth-tab')[0].classList.add('active');
+onAuthStateChanged(auth, (user) => {
+  document.getElementById('loader').style.display = 'none';
+  if (user) {
+    currentUser = user;
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display = 'block';
+    document.getElementById('user-display').textContent = user.email;
+    escucharTrades();
   } else {
-    document.getElementById('register-form').classList.add('show');
-    document.querySelectorAll('.auth-tab')[1].classList.add('active');
-  }
-}
-
-function handleLogin(e) {
-  e.preventDefault();
-  const user = document.getElementById('login-user').value.trim();
-  const pass = document.getElementById('login-pass').value;
-  
-  const users = getUsers();
-  
-  if (!users[user]) {
-    toast('Usuario no existe','err');
-    return;
-  }
-  
-  if (users[user].password !== pass) {
-    toast('Contraseña incorrecta','err');
-    return;
-  }
-  
-  currentUser = user;
-  trades = getUserTrades(user);
-  showApp();
-  toast(`Bienvenido ${user}!`, 'ok');
-}
-
-function handleRegister(e) {
-  e.preventDefault();
-  const user = document.getElementById('register-user').value.trim();
-  const pass = document.getElementById('register-pass').value;
-  const pass2 = document.getElementById('register-pass2').value;
-  
-  if (pass !== pass2) {
-    toast('Las contraseñas no coinciden','err');
-    return;
-  }
-  
-  if (pass.length < 4) {
-    toast('Contraseña muy corta (mín 4 caracteres)','err');
-    return;
-  }
-  
-  const users = getUsers();
-  
-  if (users[user]) {
-    toast('Usuario ya existe','err');
-    return;
-  }
-  
-  users[user] = { password: pass, createdAt: new Date().toISOString() };
-  saveUsers(users);
-  
-  currentUser = user;
-  trades = [];
-  saveTrades(user, trades);
-  
-  showApp();
-  toast(`¡Cuenta creada! Bienvenido ${user}!`, 'ok');
-}
-
-function logout() {
-  if (confirm('¿Cerrar sesión?')) {
     currentUser = null;
     trades = [];
     document.getElementById('auth-screen').style.display = 'flex';
     document.getElementById('app-screen').style.display = 'none';
-    document.getElementById('login-form').reset();
-    document.getElementById('register-form').reset();
-    switchAuthTab('login');
-    toast('Sesión cerrada', 'ok');
+    document.getElementById('sync-status').textContent = 'Conectado';
   }
+});
+
+window.setAuthMode = (mode) => {
+  authMode = mode;
+  document.getElementById('tab-login-btn').classList.toggle('active', mode === 'login');
+  document.getElementById('tab-reg-btn').classList.toggle('active', mode === 'reg');
+  document.getElementById('auth-btn').textContent = mode === 'login' ? '🔓 Ingresar' : '✍️ Crear Cuenta';
+  document.getElementById('auth-err').textContent = '';
+};
+
+window.handleAuth = async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('auth-email').value.trim();
+  const pass = document.getElementById('auth-pass').value;
+  const btn = document.getElementById('auth-btn');
+  const errEl = document.getElementById('auth-err');
+  btn.disabled = true;
+  btn.textContent = '⏳ Cargando...';
+  errEl.textContent = '';
+  try {
+    if (authMode === 'login') {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } else {
+      await createUserWithEmailAndPassword(auth, email, pass);
+    }
+  } catch (err) {
+    const msgs = {
+      'auth/user-not-found': 'Usuario no encontrado',
+      'auth/wrong-password': 'Contraseña incorrecta',
+      'auth/email-already-in-use': 'Este email ya tiene cuenta — Ingresa',
+      'auth/weak-password': 'Contraseña muy corta (mín. 6 caracteres)',
+      'auth/invalid-email': 'Email inválido',
+      'auth/invalid-credential': 'Email o contraseña incorrectos',
+      'auth/too-many-requests': 'Demasiados intentos. Espera un momento',
+    };
+    errEl.textContent = msgs[err.code] || err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = authMode === 'login' ? '🔓 Ingresar' : '✍️ Crear Cuenta';
+  }
+};
+
+window.handleLogout = async () => {
+  if (confirm('¿Cerrar sesión?')) {
+    await signOut(auth);
+    toast('Sesión cerrada');
+  }
+};
+
+// ═══════════════════════════════════════
+// REALTIME DATABASE — POR USUARIO
+// ═══════════════════════════════════════
+function escucharTrades() {
+  const tradesRef = ref(db, `users/${currentUser.uid}/trades`);
+  onValue(tradesRef, (snapshot) => {
+    const data = snapshot.val();
+    trades = data ? Object.values(data).sort((a, b) => b.id - a.id) : [];
+    document.getElementById('sync-status').textContent = `Sincronizado · ${trades.length} trades`;
+    renderHist();
+    renderStats();
+  });
 }
 
-function showApp() {
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'block';
-  document.getElementById('current-user').textContent = currentUser;
-  document.getElementById('loader').style.display = 'none';
-  initChecks();
-  const now = new Date();
-  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-  document.getElementById('f-dt').value = local;
-  show('semaforo');
+async function writeToCloud(tradesArray) {
+  isSaving = true;
+  document.getElementById('saving-badge').style.display = 'block';
+  document.getElementById('sync-status').textContent = 'Guardando...';
+  try {
+    const obj = {};
+    tradesArray.forEach(t => obj[t.id] = t);
+    await set(ref(db, `users/${currentUser.uid}/trades`), obj.length === 0 ? null : obj);
+    document.getElementById('sync-status').textContent = `Sincronizado · ${tradesArray.length} trades`;
+    toast('✅ Guardado en la nube', 'ok');
+  } catch (e) {
+    toast('❌ Error guardando', 'err');
+    document.getElementById('sync-status').textContent = 'Error de sincronización';
+  } finally {
+    isSaving = false;
+    document.getElementById('saving-badge').style.display = 'none';
+  }
 }
 
 // ═══════════════════════════════════════
@@ -599,20 +539,18 @@ function initChecks() {
     </div>`).join('');
 }
 
-function tog(i, type) {
-  const id = type + 'c' + i;
-  const bid = type + 'cb' + i;
-  const el = document.getElementById(id);
+window.tog = (i, type) => {
+  const el = document.getElementById(type + 'c' + i);
   el.classList.toggle('ck');
-  const box = document.getElementById(bid);
   const on = el.classList.contains('ck');
+  const box = document.getElementById(type + 'cb' + i);
   box.style.background = on ? (type === 'g' ? 'var(--green)' : 'var(--red)') : '';
   box.style.borderColor = on ? (type === 'g' ? 'var(--green)' : 'var(--red)') : '';
   box.textContent = on ? '✓' : '';
   box.style.color = '#000';
-}
+};
 
-function calcSem() {
+window.calcSem = () => {
   let g = 0, r = 0;
   GC.forEach((_, i) => { if (document.getElementById('gc' + i)?.classList.contains('ck')) g++; });
   RC.forEach((_, i) => { if (document.getElementById('rc' + i)?.classList.contains('ck')) r++; });
@@ -623,7 +561,9 @@ function calcSem() {
     document.getElementById('sl-r').classList.add('ar');
     v.style.color = 'var(--red)';
     v.textContent = '🔴 NO OPERES HOY';
-    d.textContent = r >= 2 ? `Tienes ${r} señales de alerta. Tu mente no está lista. El mercado estará mañana.` : `Solo ${g}/8 condiciones verdes. El setup no está confirmado todavía.`;
+    d.textContent = r >= 2
+      ? `Tienes ${r} señales de alerta. Tu mente no está lista. El mercado estará mañana.`
+      : `Solo ${g}/8 condiciones verdes. El setup no está confirmado.`;
   } else if (r === 1 || g < 7) {
     document.getElementById('sl-y').classList.add('ay');
     v.style.color = 'var(--yellow)';
@@ -635,31 +575,28 @@ function calcSem() {
     v.textContent = '🟢 LISTO PARA OPERAR';
     d.textContent = `${g}/8 condiciones y solo ${r} alerta. Estado óptimo — ejecuta con confianza.`;
   }
-}
+};
 
 // ═══════════════════════════════════════
 // EMOTION
 // ═══════════════════════════════════════
-function setEmo(name, type, el) {
-  curEmo = name;
-  curEmoType = type;
+window.setEmo = (name, type, el) => {
+  curEmo = name; curEmoType = type;
   document.querySelectorAll('.eb').forEach(b => b.className = 'eb');
   el.classList.add(type === 'g' ? 'sg' : type === 'b' ? 'sb' : 'sn');
-}
+};
 
 // ═══════════════════════════════════════
-// JUDGE
+// JUDGE LOGIC
 // ═══════════════════════════════════════
-function juzgar() {
+window.juzgar = () => {
   if (!curEmo) { toast('Selecciona cómo te sientes', 'err'); return; }
   const razon = document.getElementById('f-razon').value.trim();
   if (!razon) { toast('Escribe por qué entras el trade', 'err'); return; }
-
   const temps = document.getElementById('f-temps').value;
   const stop = document.getElementById('f-stop').value;
   const loss = parseInt(document.getElementById('f-loss').value);
   const act = document.getElementById('f-act').value;
-
   let score = 0, pros = [], cons = [];
 
   if (curEmoType === 'g') { score += 2; pros.push('✅ Estado emocional óptimo'); }
@@ -691,50 +628,44 @@ function juzgar() {
     cons.push('⚠️ Nasdaq: tu activo más peligroso — criterio extra estricto');
   }
 
-  let verdict, color, emoji;
-  if (score >= 6) { verdict = 'TRADE APROBADO'; color = 'ap'; emoji = '🟢'; lastJudge = { v: 'APROBADO', c: 'g' }; }
-  else if (score >= 2) { verdict = 'PROCEDE CON PRECAUCIÓN'; color = 'wa'; emoji = '🟡'; lastJudge = { v: 'PRECAUCIÓN', c: 'y' }; }
-  else { verdict = 'TRADE RECHAZADO'; color = 're'; emoji = '🔴'; lastJudge = { v: 'RECHAZADO', c: 'r' }; }
+  let verdict, color;
+  if (score >= 6) { verdict = 'TRADE APROBADO'; color = 'ap'; lastJudge = { v: 'APROBADO', c: 'g' }; }
+  else if (score >= 2) { verdict = 'PROCEDE CON PRECAUCIÓN'; color = 'wa'; lastJudge = { v: 'PRECAUCIÓN', c: 'y' }; }
+  else { verdict = 'TRADE RECHAZADO'; color = 're'; lastJudge = { v: 'RECHAZADO', c: 'r' }; }
 
-  const jbox = document.getElementById('jbox');
-  jbox.className = `jbox show ${color}`;
+  const emoji = score >= 6 ? '🟢' : score >= 2 ? '🟡' : '🔴';
+  document.getElementById('jbox').className = `jbox show ${color}`;
   document.getElementById('jtitle').textContent = `${emoji} ${verdict}  (Score: ${score})`;
 
   let txt = '';
   if (pros.length) txt += pros.join('<br>') + '<br><br>';
   if (cons.length) txt += cons.join('<br>') + '<br><br>';
-
   if (score < 2) {
     if (loss >= 3) txt += '<strong style="color:var(--text)">Mi veredicto:</strong> Para ya. No es debilidad — es inteligencia. El mercado estará mañana con mente limpia.';
-    else if (curEmoType === 'b') txt += '<strong style="color:var(--text)">Mi veredicto:</strong> Tu estado emocional es el problema, no el mercado. 2 horas de pausa mínimo antes de considerar operar.';
-    else txt += '<strong style="color:var(--text)">Mi veredicto:</strong> Setup insuficiente. Un trade con baja probabilidad sigue siendo baja probabilidad aunque lo analices mucho.';
+    else if (curEmoType === 'b') txt += '<strong style="color:var(--text)">Mi veredicto:</strong> Tu estado emocional es el problema, no el mercado. 2 horas de pausa mínimo.';
+    else txt += '<strong style="color:var(--text)">Mi veredicto:</strong> Setup insuficiente. Un trade con baja probabilidad sigue siendo baja probabilidad.';
   } else if (score < 6) {
     txt += '<strong style="color:var(--text)">Mi veredicto:</strong> Puedes entrar pero reduce el tamaño a la mitad. Trades mediocres merecen posiciones pequeñas.';
   } else {
-    txt += '<strong style="color:var(--text)">Mi veredicto:</strong> Este es el tipo de trade que debes buscar. Todo confirma. Entra con confianza y respeta el stop sin importar lo que pase.';
+    txt += '<strong style="color:var(--text)">Mi veredicto:</strong> Este es el tipo de trade que debes buscar. Todo confirma. Entra con confianza y respeta el stop.';
   }
-
   document.getElementById('jtext').innerHTML = txt;
   document.getElementById('savebtn').style.display = 'block';
-}
+};
 
 // ═══════════════════════════════════════
 // SAVE TRADE
 // ═══════════════════════════════════════
-function guardar() {
+window.guardar = async () => {
   if (isSaving) { toast('Guardando, espera...', 'err'); return; }
   const btn = document.getElementById('savebtn');
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Guardando...';
-
-  const dt = document.getElementById('f-dt').value || new Date().toISOString();
+  btn.disabled = true; btn.innerHTML = '⏳ Guardando...';
   const trade = {
     id: Date.now(),
-    dt,
+    dt: document.getElementById('f-dt').value || new Date().toISOString(),
     activo: document.getElementById('f-act').value,
     dir: document.getElementById('f-dir').value,
-    emo: curEmo,
-    eType: curEmoType,
+    emo: curEmo, eType: curEmoType,
     razon: document.getElementById('f-razon').value,
     temps: document.getElementById('f-temps').value,
     stop: document.getElementById('f-stop').value,
@@ -744,42 +675,54 @@ function guardar() {
     lesson: document.getElementById('f-lesson').value,
     verdict: lastJudge?.v || 'N/A',
     vc: lastJudge?.c || 'y',
-    judgeHtml: document.getElementById('jtext').innerHTML,
+    judgeHtml: document.getElementById('jtext').innerHTML
   };
-
-  trades.unshift(trade);
-  saveTrades(currentUser, trades);
-
-  // Reset
+  const newList = [trade, ...trades];
+  await writeToCloud(newList);
+  // Reset UI
   ['f-razon', 'f-niv', 'f-lesson'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-pnl').value = '';
   document.getElementById('f-loss').value = '0';
   document.querySelectorAll('.eb').forEach(b => b.className = 'eb');
-  curEmo = '';
-  curEmoType = '';
+  curEmo = ''; curEmoType = '';
   document.getElementById('jbox').className = 'jbox';
   btn.style.display = 'none';
-  btn.disabled = false;
-  btn.innerHTML = '💾 Guardar en la Nube';
-
-  toast('✅ Trade guardado', 'ok');
+  btn.disabled = false; btn.innerHTML = '💾 Guardar en la Nube';
   show('historial');
-}
+};
+
+// ═══════════════════════════════════════
+// DELETE TRADE
+// ═══════════════════════════════════════
+window.delT = async (id) => {
+  if (!confirm('¿Eliminar este trade?')) return;
+  const filtered = trades.filter(t => t.id !== id);
+  const obj = {};
+  filtered.forEach(t => obj[t.id] = t);
+  await set(ref(db, `users/${currentUser.uid}/trades`), filtered.length > 0 ? obj : null);
+};
+
+window.borrarTodo = async () => {
+  if (!confirm('⚠️ ¿Borrar TODOS los trades? No hay forma de recuperarlos.')) return;
+  if (!confirm('Última confirmación: ¿Estás seguro?')) return;
+  await set(ref(db, `users/${currentUser.uid}/trades`), null);
+  toast('Todos los datos borrados', 'err');
+};
 
 // ═══════════════════════════════════════
 // RENDER HISTORIAL
 // ═══════════════════════════════════════
 const EMOS = { Calmado: '😌', Confiado: '💪', Ansioso: '😰', Frustrado: '😤', Revenge: '🤬', Neutral: '😐' };
 
-function renderHist() {
+window.renderHist = () => {
   const list = document.getElementById('hist-list');
   const empty = document.getElementById('hist-empty');
-  if (trades.length === 0) { empty.style.display = 'block'; list.innerHTML = ''; return; }
+  if (!trades.length) { empty.style.display = 'block'; list.innerHTML = ''; return; }
   empty.style.display = 'none';
-
   list.innerHTML = trades.map(t => {
     const d = new Date(t.dt);
-    const fecha = isNaN(d) ? t.dt : d.toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short' })
+    const fecha = isNaN(d) ? t.dt
+      : d.toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short' })
       + ' ' + d.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
     const pnl = t.pnl || 0;
     const pnlStr = pnl > 0 ? '+$' + pnl.toFixed(2) : pnl < 0 ? '-$' + Math.abs(pnl).toFixed(2) : 'En curso';
@@ -805,25 +748,17 @@ function renderHist() {
       </div>
     </div>`;
   }).join('');
-}
+};
 
-function togJ(id) {
+window.togJ = (id) => {
   const el = document.getElementById(id);
   el.style.display = el.style.display === 'block' ? 'none' : 'block';
-}
-
-function delT(id) {
-  if (!confirm('¿Eliminar este trade?')) return;
-  trades = trades.filter(t => t.id !== id);
-  saveTrades(currentUser, trades);
-  renderHist();
-  renderStats();
-}
+};
 
 // ═══════════════════════════════════════
 // STATS & PATRONES
 // ═══════════════════════════════════════
-function renderStats() {
+window.renderStats = () => {
   const total = trades.length;
   const pnlTotal = trades.reduce((a, t) => a + (t.pnl || 0), 0);
   const wins = trades.filter(t => (t.pnl || 0) > 0).length;
@@ -837,19 +772,17 @@ function renderStats() {
   document.getElementById('prog-pct').textContent = '$' + pnlTotal.toFixed(0) + ' / $3,000';
   document.getElementById('prog-fill').style.width = prog + '%';
 
-  // PATRONES
   const insBox = document.getElementById('insights');
   const insEmpty = document.getElementById('ins-empty');
   if (total < 2) { insBox.innerHTML = ''; insEmpty.style.display = 'block'; return; }
   insEmpty.style.display = 'none';
-
   let ins = [];
 
   const bad = trades.filter(t => t.vc === 'r');
   if (bad.length > 0) {
     const ec = bad.reduce((a, t) => { a[t.emo] = (a[t.emo] || 0) + 1; return a; }, {});
     const worst = Object.entries(ec).sort((a, b) => b[1] - a[1])[0];
-    if (worst) ins.push({ t: '🚨 Tu Emoción de Riesgo', d: `Cuando te sientes "${worst[0]}" tienes ${worst[1]} trade(s) rechazados. Esa emoción es tu señal de PARAR inmediatamente.` });
+    if (worst) ins.push({ t: '🚨 Tu Emoción de Riesgo', d: `Cuando te sientes "${worst[0]}" tienes ${worst[1]} trade(s) rechazados. Esa emoción es tu señal de PARAR.` });
   }
 
   const actRej = trades.filter(t => t.vc === 'r').reduce((a, t) => { a[t.activo] = (a[t.activo] || 0) + 1; return a; }, {});
@@ -872,27 +805,13 @@ function renderStats() {
   }
 
   if (ins.length === 0) ins.push({ t: '✅ Sin Patrones Negativos', d: `Llevas ${total} trades registrados. Sigue así — la consistencia es la base.` });
-
   insBox.innerHTML = ins.map(i => `<div class="ins"><div class="ins-t">${i.t}</div><div class="ins-d">${i.d}</div></div>`).join('');
-}
-
-// ═══════════════════════════════════════
-// DELETE ALL
-// ═══════════════════════════════════════
-function borrarTodo() {
-  if (!confirm('⚠️ ¿Borrar TODOS tus trades? No hay forma de recuperarlos.')) return;
-  if (!confirm('Última confirmación: ¿Estás seguro?')) return;
-  trades = [];
-  saveTrades(currentUser, trades);
-  renderHist();
-  renderStats();
-  toast('Todos los datos borrados', 'err');
-}
+};
 
 // ═══════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════
-function show(tab) {
+window.show = (tab) => {
   ['semaforo', 'nuevo', 'historial', 'stats'].forEach(t => {
     document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
   });
@@ -901,15 +820,14 @@ function show(tab) {
   });
   if (tab === 'historial') renderHist();
   if (tab === 'stats') renderStats();
-}
+};
 
 // ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
-document.getElementById('loader').style.display = 'none';
-document.getElementById('auth-screen').style.display = 'flex';
-document.getElementById('app-screen').style.display = 'none';
+initChecks();
+const now = new Date();
+document.getElementById('f-dt').value = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 </script>
-
 </body>
 </html>
